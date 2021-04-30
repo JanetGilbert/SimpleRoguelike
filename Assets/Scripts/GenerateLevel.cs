@@ -12,6 +12,16 @@ public class GenerateLevel : MonoBehaviour
         public int y;
         public int w;
         public int h;
+
+        public int CenterX
+        {
+            get => x + w/2;
+        }
+
+        public int CenterY
+        {
+            get => y + h / 2;
+        }
     }
 
 
@@ -75,12 +85,22 @@ public class GenerateLevel : MonoBehaviour
 
             if (success)
             {
-                roomDefs.Add(room);
+                // Connect to previous room with tunnel
+                if (roomDefs.Count > 0)
+                {
+                    MakeTunnel(roomDefs[roomDefs.Count - 1], room);
+                }
+
+                roomDefs.Add(room); // Add to list of rooms
+
                 roomsMade++;
             }
 
             tries--;
         }
+
+ 
+
     }
 
     // Place room (rectangle) in level randomly.
@@ -136,5 +156,43 @@ public class GenerateLevel : MonoBehaviour
 
         return true;
     }
+
+
+    // Inspired by http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod,_part_3
+    // Draws a tunnel (possibly with a bend in it) from the center of one room to the center of the other.
+    private void MakeTunnel(RoomDef prev, RoomDef cur)
+    {
+        void TunnelVertical(int x, int startY, int endY)
+        {
+            if (startY > endY) (startY, endY) = (endY, startY); // Direction is not important
+
+            for (int y = startY; y < endY; y++)
+            {
+                level[x, y] = TileType.FLOOR;
+            }
+        }
+
+       void TunnelHorizontal(int y, int startX, int endX)
+        {
+            if (startX > endX) (startX, endX) = (endX, startX); // Direction is not important
+
+            for (int x = startX; x < endX; x++)
+            {
+                level[x, y] = TileType.FLOOR;
+            }
+        }
+
+        if (Random.Range(0, 2) == 0)
+        {
+            TunnelVertical(prev.CenterX, prev.CenterY, cur.CenterY);
+            TunnelHorizontal(cur.CenterY, prev.CenterX, cur.CenterX);
+        }
+        else
+        {
+            TunnelHorizontal(prev.CenterY, prev.CenterX, cur.CenterX);
+            TunnelVertical(cur.CenterX, prev.CenterY, cur.CenterY);
+        }
+    }
+
 
 }
