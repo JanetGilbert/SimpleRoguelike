@@ -25,13 +25,17 @@ public class DisplayDungeon : MonoBehaviour
     
 
 
-    void Start()
+    void Awake()
     {
         // Gaps are the size of a tile.
         xGap = tileDefs[0].tile.bounds.size.x;
         yGap = -tileDefs[0].tile.bounds.size.y; // Going upwards
     }
 
+    void Start()
+    {
+
+    }
 
     void Update()
     {
