@@ -2,27 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TileType { EMPTY, FLOOR };
+
 public class GenerateLevel : MonoBehaviour
 {
+    // Cache
+    private DisplayDungeon displayDungeon;
+
     // Level definitions
-    const int levelX = 30;
-    const int levelY = 30;
+    const int levelX = 10;
+    const int levelY = 10;
 
-    const char empty = 'O';
-    const char floor = '#';
-
-    const int maxRooms = 50;
+    const int maxRooms = 3;
     const int minRoomSize = 3;
     const int maxRoomSize = 6;
 
     // Level
-    char [,] level = new char[levelX, levelY];
+    private TileType[,] level = new TileType[levelX, levelY];
 
 
     void Start()
     {
+        displayDungeon = GetComponent<DisplayDungeon>();
+
         Generate();
-        Print();
+
+
+        displayDungeon.SetupTiles(level);
+        displayDungeon.PrintTiles(level);
 
     }
 
@@ -40,7 +47,7 @@ public class GenerateLevel : MonoBehaviour
         {
             for (int y = 0; y < levelY; y++)
             {
-                level[x,y] = empty;
+                level[x,y] = TileType.EMPTY;
             }
         }
 
@@ -67,31 +74,16 @@ public class GenerateLevel : MonoBehaviour
             {
                 for (int y = roomY; y < roomY + roomHeight; y++)
                 {
-                    level[x, y] = floor;
+                    level[x, y] = TileType.FLOOR;
                 }
             }
         }
     }
 
-    // Is this position in the level?
+    // Is this position inside the level grid?
     bool IsValidPosition(int x, int y)
     {
         return ((x > 0) && (x < levelX) && (y > 0) && (y < levelY));
     }
 
-    // Debug Print level
-    void Print()
-    {
-        for (int y = 0; y < levelY; y++)
-        {
-            string line = "";
-
-            for (int x = 0; x < levelX; x++)
-            {
-                line += level[x, y];
-            }
-
-            Debug.Log(line);
-        }
-    }
 }
