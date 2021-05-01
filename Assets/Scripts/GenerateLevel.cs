@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileType { EMPTY, FLOOR };
+public enum TileType { EMPTY, FLOOR, CORRIDOR };
 
 public class GenerateLevel : MonoBehaviour
 {
@@ -168,7 +168,7 @@ public class GenerateLevel : MonoBehaviour
 
             for (int y = startY; y < endY; y++)
             {
-                level[x, y] = TileType.FLOOR;
+                if (level[x, y] == TileType.EMPTY) level[x, y] = TileType.CORRIDOR;
             }
         }
 
@@ -178,7 +178,7 @@ public class GenerateLevel : MonoBehaviour
 
             for (int x = startX; x < endX; x++)
             {
-                level[x, y] = TileType.FLOOR;
+                if (level[x, y] == TileType.EMPTY) level[x, y] = TileType.CORRIDOR;
             }
         }
 

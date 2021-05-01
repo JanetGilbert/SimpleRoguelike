@@ -184,6 +184,9 @@ MonoBehaviour:
   - type: 1
     tile: {fileID: -5587013198427861700, guid: b2b9c1707842d4664b077bbf55a2a55f, type: 3}
     debugChar: 35
+  - type: 2
+    tile: {fileID: 1971261503433140533, guid: b2b9c1707842d4664b077bbf55a2a55f, type: 3}
+    debugChar: 61
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
